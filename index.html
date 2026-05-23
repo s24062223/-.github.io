@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E技能行动者 - 松鼠安全科普课堂</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "幼圆", sans-serif;
+        }
+        body {
+            background: #f8f0f3;
+            min-height: 100vh;
+            padding: 20px 15px;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            overflow-x:hidden;
+        }
+        .page {
+            width:100%;
+            max-width:420px;
+            display:none;
+            flex-direction:column;
+            align-items:center;
+        }
+        .page.active {
+            display:flex;
+        }
+
+        /* 精致排版 · 大气首页 */
+        #splashPage {
+            position:relative;
+            min-height:95vh;
+            justify-content:center;
+            padding: 50px 30px;
+            border-radius:60px;
+            box-shadow: 0 0 0 4px #ffd6e0, 0 20px 50px rgba(255,120,150,0.15);
+            background:url(bg.jpg) no-repeat center center;
+            background-size:cover;
+            overflow: hidden;
+        }
+        #splashPage::before {
+            content:'';
+            position:absolute;
+            left:0;top:0;
+            width:100%;height:100%;
+            background:rgba(255,255,255,0.75);
+            backdrop-filter: blur(3px);
+            border-radius:60px;
+            z-index:1;
+        }
+        
+        .splash-wrap {
+            width:100%;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            z-index:2;
+            position:relative;
+            gap: 28px; /* 核心：统一精致间距 */
+        }
+
+        .splash-img {
+            width:100%;
+            border-radius:40px;
+            overflow:hidden;
+            box-shadow:0 15px 40px rgba(200,80,110,0.2);
+        }
+        .splash-img img {
+            width:100%;
+            display:block;
+        }
+
+        .splash-title {
+            font-size:38px;
+            color:#c72c41;
+            font-weight:900;
+            letter-spacing:6px;
+            text-align: center;
+        }
+        .splash-sub {
+            font-size:16px;
+            color:#a83c55;
+            letter-spacing:2px;
+            opacity: 0.9;
+            text-align: center;
+        }
+
+        .safe-slogan-box {
+            width:100%;
+            padding:24px 20px;
+            text-align:center;
+            border-radius:30px;
+            background:linear-gradient(135deg,rgba(255,220,230,0.5),rgba(255,240,245,0.6));
+            box-shadow: inset 0 2px 8px rgba(255,180,200,0.25);
+        }
+        .safe-line {
+            font-size:15px;
+            color:#912e42;
+            line-height:2;
+            font-weight:600;
+        }
+
+        .safe-tips {
+            display:flex;
+            flex-wrap:wrap;
+            justify-content:center;
+            gap:12px;
+            width:100%;
+        }
+        .tip-item {
+            padding:9px 20px;
+            border-radius:25px;
+            font-size:14px;
+            color:#b03852;
+            background:linear-gradient(135deg,#ffd9e4,#ffe8f0);
+            font-weight:600;
+            box-shadow:0 3px 10px rgba(255,150,175,0.15);
+        }
+
+        .enter-btn {
+            padding:20px 60px;
+            font-size:20px;
+            letter-spacing:3px;
+            border-radius:50px;
+            border:none;
+            background:linear-gradient(135deg,#ff6b8b,#d83e5c);
+            color:#fff;
+            font-weight:bold;
+            box-shadow:0 12px 30px rgba(216,62,92,0.25);
+            cursor:pointer;
+            transition:all 0.3s ease;
+            margin-top: 10px;
+        }
+        .enter-btn:hover {
+            transform:translateY(-5px) scale(1.02);
+            box-shadow:0 15px 35px rgba(216,62,92,0.35);
+        }
+
+        /* 第二页样式 */
+        .top-title {
+            font-size: 28px;
+            color: #ff4b73;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .main-card {
+            width: 100%;
+            background: #fff9e8;
+            border-radius: 45px;
+            padding: 30px 25px;
+            box-shadow: 0 0 0 7px #ffb3c1, 0 12px 30px rgba(255,90,125,0.25);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        /* 返回首页按钮样式 */
+        .back-btn{
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            background: #ff6b8b;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(255,107,139,0.3);
+            transition: 0.2s;
+        }
+        .back-btn:hover{
+            background: #d83e5c;
+        }
+
+        .squirrel-area {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .squirrel-btn {
+            width: 150px;
+            height: 150px;
+            background: #ffffff;
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 70px;
+            border: 7px solid #ffb3c1;
+            box-shadow: 0 8px 18px rgba(255,179,193,0.5);
+            cursor: pointer;
+            animation: squirrelMove 2s infinite alternate ease-in-out;
+        }
+        @keyframes squirrelMove {
+            0% { transform: rotate(-4deg); }
+            100% { transform: rotate(4deg); }
+        }
+        .squirrel-tip {
+            font-size: 16px;
+            color: #ff5a7d;
+            font-weight: bold;
+        }
+        .func-row {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+        .func-btn {
+            flex: 1;
+            max-width: 140px;
+            background: #fff;
+            border-radius: 25px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 5px 12px rgba(255,214,231,0.5);
+            transition: 0.2s;
+        }
+        .func-btn:hover {
+            transform: translateY(-6px);
+            background: #fff0f5;
+        }
+        .func-icon {
+            width: 75px;
+            height: 75px;
+            border-radius: 20px;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            border: 4px solid #ffd6e7;
+        }
+        .icon-video { background: #e7f5ff; color: #54a0ff; }
+        .icon-check { background: #fff0f7; color: #ff7597; }
+        .func-text {
+            font-size: 17px;
+            color: #ff5a7d;
+            font-weight: bold;
+        }
+        .content-box {
+            width: 100%;
+            min-height: 260px;
+            background: #fff;
+            border-radius: 25px;
+            padding: 20px;
+            box-shadow: inset 0 0 12px rgba(255,214,231,0.6);
+            display: none;
+            text-align: center;
+        }
+        .video-player {
+            width: 100%;
+            border-radius: 18px;
+            background: #000;
+            margin-bottom: 15px;
+        }
+        .checkin-video, .checkin-img {
+            width: 100%;
+            border-radius: 18px;
+            margin-bottom: 12px;
+        }
+        .rule-text {
+            font-size: 14px;
+            color: #666;
+            text-align: left;
+            background: #fef2f6;
+            padding: 12px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+        .btn {
+            background: linear-gradient(135deg,#ff8aa1,#ff6b8b);
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .score-box {
+            width: 100%;
+            background: linear-gradient(135deg,#fff0f7,#ffe6ef);
+            border-radius: 25px;
+            padding: 18px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .score-title {
+            font-size: 18px;
+            color: #ff5a7d;
+            font-weight: bold;
+        }
+        .score-num {
+            font-size: 26px;
+            color: #ff4b73;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        .footer-text {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #ff8da1;
+            text-align: center;
+        }
+        .bubble-tip {
+            position: fixed;
+            top: 22%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.98);
+            padding: 14px 30px;
+            border-radius: 30px;
+            border: 4px solid #ff9da6;
+            font-size: 17px;
+            color: #ff5a7d;
+            font-weight: bold;
+            z-index: 999;
+            animation: bubbleAnim 2.2s forwards;
+            pointer-events: none;
+        }
+        @keyframes bubbleAnim {
+            0% { opacity:0; transform:translateX(-50%) scale(0.8); }
+            20% { opacity:1; transform:translateX(-50%) scale(1); }
+            80% { opacity:1; transform:translateX(-50%) scale(0.8); }
+            100% { opacity:0; transform:translateX(-50%) scale(0.8); }
+        }
+    </style>
+</head>
+<body>
+
+<div id="splashPage" class="page active">
+    <div class="splash-wrap">
+        <div class="splash-img">
+            <img src="banner.jpg" alt="安全科普">
+        </div>
+
+        <h2 class="splash-title">E技能行动者</h2>
+        <p class="splash-sub">松鼠安全科普课堂 · 守护童心平安成长</p>
+
+        <div class="safe-slogan-box">
+            <p class="safe-line">普及防灾减灾知识 筑牢校园安全防线<br>学习应急避险技能 守护少年健康成长</p>
+        </div>
+
+        <div class="safe-tips">
+            <span class="tip-item">消防安全</span>
+            <span class="tip-item">防震减灾</span>
+            <span class="tip-item">应急自救</span>
+            <span class="tip-item">防溺水安全</span>
+            <span class="tip-item">出行防护</span>
+            <span class="tip-item">居家避险</span>
+        </div>
+
+        <button class="enter-btn" onclick="goToMain()">立即进入学习</button>
+    </div>
+</div>
+
+<div id="mainPage" class="page">
+    <h1 class="top-title">E技能行动者</h1>
+    <div class="main-card">
+        <!-- 返回首页按钮 -->
+        <button class="back-btn" onclick="backHome()">← 返回首页</button>
+
+        <div class="squirrel-area">
+            <div class="squirrel-btn" onclick="squirrelAction()">🐿️</div>
+            <div class="squirrel-tip" id="squirrelTip">点击互动学习安全知识</div>
+        </div>
+        <div class="func-row">
+            <div class="func-btn" onclick="showVideo()">
+                <div class="func-icon icon-video">📺</div>
+                <div class="func-text">科普视频</div>
+            </div>
+            <div class="func-btn" onclick="showCheck()">
+                <div class="func-icon icon-check">📷</div>
+                <div class="func-text">拍照打卡</div>
+            </div>
+        </div>
+        <div class="content-box" id="videoBox">
+            <video class="video-player" controls playsinline preload="auto">
+                <source src="video.mp4" type="video/mp4">
+                请使用最新浏览器观看
+            </video>
+            <p style="color:#666; font-size:14px;">应急安全科普教学视频</p>
+        </div>
+        <div class="content-box" id="checkBox">
+            <div class="rule-text">
+                1.观看科普视频<br>
+                2.线下实操练习<br>
+                3.开启摄像头拍照<br>
+                4.完成打卡得积分
+            </div>
+            <video id="cam" class="checkin-video" autoplay playsinline muted></video>
+            <canvas id="canvas" style="display:none;"></canvas>
+            <img id="photo" class="checkin-img" style="display:none;">
+            <br>
+            <button class="btn" onclick="openCam()">📸 开启镜头</button>
+            <button class="btn" id="takeBtn" onclick="takePic()" style="display:none;">✨ 拍照打卡</button>
+            <button class="btn" id="saveBtn" onclick="savePic()" style="display:none;">💾 保存照片</button>
+        </div>
+        <div class="score-box">
+            <div class="score-title">我的学习积分</div>
+            <div class="score-num" id="score">0</div>
+        </div>
+    </div>
+    <div class="footer-text">安全知识记心中 平安快乐伴我行</div>
+</div>
+
+<script>
+    let score = 0;
+    let mediaStream = null;
+
+    const squirrelTip = document.getElementById('squirrelTip');
+    const scoreNum = document.getElementById('score');
+    const videoBox = document.getElementById('videoBox');
+    const checkBox = document.getElementById('checkBox');
+    const cam = document.getElementById('cam');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const photo = document.getElementById('photo');
+    const takeBtn = document.getElementById('takeBtn');
+    const saveBtn = document.getElementById('saveBtn');
+
+    // 去第二页
+    function goToMain() {
+        document.getElementById('splashPage').classList.remove('active');
+        document.getElementById('mainPage').classList.add('active');
+    }
+    // 返回第一页
+    function backHome(){
+        document.getElementById('mainPage').classList.remove('active');
+        document.getElementById('splashPage').classList.add('active');
+    }
+    function showVideo() {
+        checkBox.style.display = 'none';
+        videoBox.style.display = 'block';
+    }
+    function showCheck() {
+        videoBox.style.display = 'none';
+        checkBox.style.display = 'block';
+    }
+    function squirrelAction() {
+        const tips = ["牢记安全常识！","学习应急技能！","伤口正确包扎！","火情拨打119！","争做安全小卫士！"];
+        squirrelTip.innerText = tips[Math.floor(Math.random()*tips.length)];
+        bubble(squirrelTip.innerText);
+    }
+    async function openCam() {
+        mediaStream = await navigator.mediaDevices.getUserMedia({video:true});
+        cam.srcObject = mediaStream;
+        takeBtn.style.display = "inline-block";
+    }
+    function takePic() {
+        canvas.width = cam.videoWidth;
+        canvas.height = cam.videoHeight;
+        ctx.drawImage(cam,0,0,canvas.width,canvas.height);
+        photo.src = canvas.toDataURL('image/jpeg');
+        photo.style.display = "block";
+        takeBtn.style.display = "none";
+        saveBtn.style.display = "inline-block";
+        score += 20;
+        scoreNum.innerText = score;
+        bubble("打卡成功 +20积分🎉");
+    }
+    function savePic() {
+        let a = document.createElement('a');
+        a.href = canvas.toDataURL('image/jpeg');
+        a.download = '打卡照片.jpg';
+        a.click();
+    }
+    function bubble(text) {
+        const b = document.createElement('div');
+        b.className = 'bubble-tip';
+        b.innerText = text;
+        document.body.appendChild(b);
+        setTimeout(()=>b.remove(),2200);
+    }
+</script>
+
+</body>
+</html>
